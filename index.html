@@ -122,6 +122,27 @@ a { color: inherit; }
 .kv-v { display: grid; gap: 4px; font-size: 13px; }
 .kv-v span small { color: var(--muted); font-size: 12px; margin-left: 6px; }
 
+/* contact form */
+.form { margin-top: 24px; display: grid; gap: 14px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-size: 12px; font-weight: 500; }
+.field input, .field select, .field textarea { font: inherit; font-size: 13px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; width: 100%; transition: border-color .2s, box-shadow .2s; }
+.field textarea { min-height: 120px; resize: vertical; }
+.field input::placeholder, .field textarea::placeholder { color: var(--muted); opacity: .7; }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--muted); }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form-foot { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.form-foot .pill:disabled { opacity: .5; cursor: default; }
+.status { font-size: 12px; color: var(--muted); }
+.status.ok { color: #15803d; }
+.status.err { color: #b91c1c; }
+:root[data-theme="dark"] .status.ok { color: #4ade80; }
+:root[data-theme="dark"] .status.err { color: #f87171; }
+.privacy { font-size: 11px; color: var(--muted); }
+@media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+
 footer { padding: 20px 32px 32px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
 @media (max-width: 520px) {
@@ -203,6 +224,21 @@ footer { padding: 20px 32px 32px; border-top: 1px solid var(--line); font-size: 
     <div class="label" id="l-contact"></div>
     <p class="lead" id="c-lead" style="font-size:18px"></p>
     <div id="c-list" style="margin-top:18px;display:grid;gap:6px;font-size:13px"></div>
+
+    <form class="form" id="form" novalidate>
+      <div class="form-row">
+        <div class="field"><label for="f-name" id="fl-name"></label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+        <div class="field"><label for="f-email" id="fl-email"></label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+      </div>
+      <div class="field"><label for="f-service" id="fl-service"></label><select id="f-service" name="service"></select></div>
+      <div class="field"><label for="f-message" id="fl-message"></label><textarea id="f-message" name="message" required></textarea></div>
+      <div class="hp" aria-hidden="true"><label for="f-web">Web</label><input id="f-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <div class="form-foot">
+        <button type="submit" class="pill" id="f-send"></button>
+        <span class="status" id="f-status" role="status" aria-live="polite"></span>
+      </div>
+      <p class="privacy" id="f-privacy"></p>
+    </form>
   </section>
 
   <footer>
@@ -213,7 +249,9 @@ footer { padding: 20px 32px 32px; border-top: 1px solid var(--line); font-size: 
 
 <script>
 // Contact channels: fill in to show them on the page. Empty values stay hidden.
-var CONFIG = { email: "", phone: "", linkedin: "", instagram: "" };
+// formEndpoint: URL of a form service (for example a Formspree form: "https://formspree.io/f/xxxxxxxx").
+// With an endpoint the form sends in the background; with only an email it opens the visitor's mail app; with neither it says it is not set up yet.
+var CONFIG = { email: "", phone: "", linkedin: "", instagram: "", formEndpoint: "" };
 
 var ICONS = {
   social: '<path d="M4 5h16v11H9l-5 4z"/>',
@@ -266,6 +304,11 @@ var T = {
     cLead: "Cuéntame qué necesita tu negocio y te propongo el mejor punto de partida.",
     cLoc: "Barcelona · reuniones presenciales y online",
     cEmail: "Email", cPhone: "Teléfono", cLinkedin: "LinkedIn", cInstagram: "Instagram",
+    form: { name: "Nombre", email: "Email", service: "Servicio de interés", other: "Otro / no lo sé todavía", message: "Mensaje", send: "Enviar mensaje", sending: "Enviando…",
+      privacy: "Usaré tus datos solo para responder a tu mensaje.",
+      invalid: "Revisa los campos marcados: nombre, email válido y mensaje.", ok: "Mensaje enviado. Te responderé pronto.",
+      mailOpen: "Se abrirá tu aplicación de correo con el mensaje listo para enviar.", fail: "No se pudo enviar. Inténtalo de nuevo más tarde.",
+      notReady: "El formulario aún no está activado.", subject: "Consulta desde la web", fName: "Nombre", fEmail: "Email", fService: "Servicio" },
     footL: "© 2026 Ekaterina Korenkova",
     footR: "Comunicación y marketing digital en Barcelona"
   },
@@ -310,6 +353,11 @@ var T = {
     cLead: "Tell me what your business needs and I'll suggest the best starting point.",
     cLoc: "Barcelona · in-person and online meetings",
     cEmail: "Email", cPhone: "Phone", cLinkedin: "LinkedIn", cInstagram: "Instagram",
+    form: { name: "Name", email: "Email", service: "Service of interest", other: "Other / not sure yet", message: "Message", send: "Send message", sending: "Sending…",
+      privacy: "I will use your details only to reply to your message.",
+      invalid: "Please check the marked fields: name, a valid email and a message.", ok: "Message sent. I will reply soon.",
+      mailOpen: "Your mail app will open with the message ready to send.", fail: "Could not send. Please try again later.",
+      notReady: "The form is not active yet.", subject: "Website enquiry", fName: "Name", fEmail: "Email", fService: "Service" },
     footL: "© 2026 Ekaterina Korenkova",
     footR: "Communication and digital marketing in Barcelona"
   },
@@ -354,6 +402,11 @@ var T = {
     cLead: "Расскажите, что нужно вашему бизнесу, и я предложу лучшую точку старта.",
     cLoc: "Барселона · встречи лично и онлайн",
     cEmail: "Email", cPhone: "Телефон", cLinkedin: "LinkedIn", cInstagram: "Instagram",
+    form: { name: "Имя", email: "Email", service: "Интересующая услуга", other: "Другое / пока не знаю", message: "Сообщение", send: "Отправить сообщение", sending: "Отправляю…",
+      privacy: "Данные используются только для ответа на ваше сообщение.",
+      invalid: "Проверьте отмеченные поля: имя, корректный email и сообщение.", ok: "Сообщение отправлено. Скоро отвечу.",
+      mailOpen: "Откроется почтовое приложение с готовым письмом.", fail: "Не удалось отправить. Попробуйте позже.",
+      notReady: "Форма пока не активирована.", subject: "Обращение с сайта", fName: "Имя", fEmail: "Email", fService: "Услуга" },
     footL: "© 2026 Ekaterina Korenkova",
     footR: "Коммуникации и digital-маркетинг в Барселоне"
   }
@@ -409,6 +462,18 @@ function render(lang) {
   $("foot-r").textContent = t.footR;
   $("theme").setAttribute("aria-label", THEME_LABEL[lang] || THEME_LABEL.es);
 
+  var f = t.form, sel = $("f-service"), keep = sel.selectedIndex;
+  $("fl-name").textContent = f.name;
+  $("fl-email").textContent = f.email;
+  $("fl-service").textContent = f.service;
+  $("fl-message").textContent = f.message;
+  $("f-send").textContent = f.send;
+  $("f-privacy").textContent = f.privacy;
+  sel.innerHTML = t.services.map(function (s) { return "<option>" + esc(s[0]) + "</option>"; }).join("") + "<option>" + esc(f.other) + "</option>";
+  sel.selectedIndex = keep > -1 ? keep : t.services.length;
+  $("f-status").textContent = "";
+  $("f-status").className = "status";
+
   document.querySelectorAll(".lang button").forEach(function (b) {
     b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang));
   });
@@ -417,9 +482,43 @@ function render(lang) {
 document.querySelectorAll(".lang button").forEach(function (b) {
   b.addEventListener("click", function () {
     var l = b.getAttribute("data-lang");
+    currentLang = l;
     render(l);
     try { localStorage.setItem("ek-lang", l); } catch (e) {}
   });
+});
+
+var currentLang = "es";
+function setStatus(text, kind) { var s = $("f-status"); s.textContent = text; s.className = "status" + (kind ? " " + kind : ""); }
+
+$("form").addEventListener("submit", function (e) {
+  e.preventDefault();
+  var f = T[currentLang].form;
+  var name = $("f-name"), email = $("f-email"), msg = $("f-message");
+  if ($("f-web").value) return; // honeypot: bots fill this hidden field
+  var bad = [name, email, msg].filter(function (el) { return !el.value.trim() || (el.type === "email" && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value.trim())); });
+  [name, email, msg].forEach(function (el) { el.setAttribute("aria-invalid", String(bad.indexOf(el) > -1)); });
+  if (bad.length) { setStatus(f.invalid, "err"); bad[0].focus(); return; }
+
+  var data = { name: name.value.trim(), email: email.value.trim(), service: $("f-service").value, message: msg.value.trim() };
+
+  if (CONFIG.formEndpoint) {
+    var btn = $("f-send");
+    btn.disabled = true; setStatus(f.sending);
+    fetch(CONFIG.formEndpoint, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
+      .then(function (r) {
+        if (!r.ok) throw new Error("http " + r.status);
+        setStatus(f.ok, "ok"); $("form").reset();
+      })
+      .catch(function () { setStatus(f.fail, "err"); })
+      .then(function () { btn.disabled = false; });
+  } else if (CONFIG.email) {
+    var body = f.fName + ": " + data.name + "\n" + f.fEmail + ": " + data.email + "\n" + f.fService + ": " + data.service + "\n\n" + data.message;
+    setStatus(f.mailOpen);
+    window.location.href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent(f.subject) + "&body=" + encodeURIComponent(body);
+  } else {
+    setStatus(f.notReady, "err");
+  }
 });
 
 var THEME_LABEL = { es: "Tema oscuro", en: "Dark theme", ru: "Тёмная тема" };
@@ -443,7 +542,8 @@ $("theme").addEventListener("click", function () {
 
 var start = "es";
 try { start = localStorage.getItem("ek-lang") || "es"; } catch (e) {}
-render(T[start] ? start : "es");
+currentLang = T[start] ? start : "es";
+render(currentLang);
 </script>
 </body>
 </html>
