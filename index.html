@@ -251,7 +251,8 @@ footer { padding: 20px 32px 32px; border-top: 1px solid var(--line); font-size: 
 // Contact channels: fill in to show them on the page. Empty values stay hidden.
 // formEndpoint: URL of a form service (for example a Formspree form: "https://formspree.io/f/xxxxxxxx").
 // With an endpoint the form sends in the background; with only an email it opens the visitor's mail app; with neither it says it is not set up yet.
-var CONFIG = { email: "", phone: "", linkedin: "", instagram: "", formEndpoint: "" };
+// demoMode: while no endpoint or email is set, the form shows a success message but sends nothing. Turn it off before the site goes live.
+var CONFIG = { email: "", phone: "", linkedin: "", instagram: "", formEndpoint: "", demoMode: true };
 
 var ICONS = {
   social: '<path d="M4 5h16v11H9l-5 4z"/>',
@@ -516,6 +517,11 @@ $("form").addEventListener("submit", function (e) {
     var body = f.fName + ": " + data.name + "\n" + f.fEmail + ": " + data.email + "\n" + f.fService + ": " + data.service + "\n\n" + data.message;
     setStatus(f.mailOpen);
     window.location.href = "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent(f.subject) + "&body=" + encodeURIComponent(body);
+  } else if (CONFIG.demoMode) {
+    // Placeholder only: nothing is sent anywhere. Set demoMode to false or add formEndpoint/email before launch.
+    var b2 = $("f-send");
+    b2.disabled = true; setStatus(f.sending);
+    setTimeout(function () { setStatus(f.ok, "ok"); $("form").reset(); b2.disabled = false; }, 700);
   } else {
     setStatus(f.notReady, "err");
   }
