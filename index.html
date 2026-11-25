@@ -98,14 +98,30 @@ a { color: inherit; }
   .card.wide .art { height: 120px; }
 }
 
-/* case study embed */
-.case { display: grid; gap: 14px; }
-.case-frame { width: 100%; max-width: 640px; aspect-ratio: 404 / 316; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--chip); }
-.case-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
-.case-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
-.case-foot b { color: var(--ink); font-weight: 600; font-size: 13px; }
-.ghost { font: inherit; font-size: 12px; font-weight: 500; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; color: var(--ink); }
-.ghost:hover { border-color: var(--muted); }
+/* portfolio showcase */
+.work-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
+.work-title { font-size: 26px; line-height: 1.25; font-weight: 500; letter-spacing: -.01em; max-width: 22ch; text-wrap: balance; }
+.arrows { display: flex; gap: 8px; flex: none; }
+.arrow { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink); display: grid; place-items: center; cursor: pointer; padding: 0; transition: border-color .2s, opacity .2s; }
+.arrow svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.arrow:hover:not(:disabled) { border-color: var(--ink); }
+.arrow:disabled { opacity: .35; cursor: default; }
+.track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 0; padding-bottom: 4px; scrollbar-width: none; }
+.track::-webkit-scrollbar { display: none; }
+.work { flex: 0 0 86%; min-width: 0; scroll-snap-align: start; display: grid; gap: 16px; align-content: start; }
+.work-art { aspect-ratio: 16 / 10; border-radius: 12px; border: 1px solid var(--line); position: relative; overflow: hidden; }
+.work-art::after { content: attr(data-ph); position: absolute; left: 14px; bottom: 12px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: rgba(0,0,0,.45); }
+.work-meta { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+.work-meta h3 { font-size: 15px; font-weight: 600; }
+.work-meta p { font-size: 13px; color: var(--muted); margin-top: 4px; max-width: 52ch; }
+.work-link { font-size: 12px; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; border-bottom: 1px solid transparent; }
+.work-link:hover { border-bottom-color: currentColor; }
+.work-link svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+@media (max-width: 520px) {
+  .work { flex-basis: 88%; }
+  .work-meta { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .work-title { font-size: 21px; }
+}
 
 /* services list */
 .item { display: grid; grid-template-columns: 1fr; gap: 6px; padding-bottom: 28px; }
@@ -216,17 +232,16 @@ footer { padding: 20px 48px 32px; border-top: 1px solid var(--line); font-size: 
     <div class="cards" id="cards"></div>
   </section>
 
-  <section class="section" id="caso">
-    <div class="label" id="l-case"></div>
-    <div class="case">
-      <div class="case-frame">
-        <iframe src="https://www.behance.net/embed/project/204773653?ilo0=1" title="Language School Banner" loading="lazy" allowfullscreen allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>
-      </div>
-      <div class="case-foot">
-        <b>Language School Banner</b>
-        <a class="ghost" id="case-link" href="https://www.behance.net/gallery/204773653" target="_blank" rel="noopener"></a>
+  <section class="section" id="proyectos" aria-labelledby="work-title">
+    <div class="label" id="l-work"></div>
+    <div class="work-head">
+      <h2 class="work-title" id="work-title"></h2>
+      <div class="arrows">
+        <button type="button" class="arrow" id="work-prev" aria-label="Anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <button type="button" class="arrow" id="work-next" aria-label="Siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
       </div>
     </div>
+    <div class="track" id="work-track" tabindex="0" role="group" aria-roledescription="carousel"></div>
   </section>
 
   <section class="section" id="servicios">
@@ -299,7 +314,8 @@ var T = {
     sub: "Máster en Communication Management por la Barcelona School of Management (UPF) y base en economía. Trabajo con estrategia, números y contenido, y atiendo en español, inglés y ruso.",
     chips: ["Redes sociales", "Google Ads", "Meta Ads", "Relaciones públicas", "Copywriting", "Newsletters", "Blog", "Estrategia de marketing", "Analítica", "ROI"],
     labelClients: "Para quién trabajo",
-    labelCase: "Caso destacado", caseLink: "Ver el proyecto en Behance",
+    labelWork: "Proyectos", workTitle: "Trabajos reales para negocios reales",
+    work: { ph: "Imagen del proyecto", title: "Nombre del proyecto", desc: "Descripción breve del proyecto: el reto, lo que se hizo y el resultado.", link: "Ver proyecto", prev: "Anterior", next: "Siguiente" },
     cards: [
       ["Pymes y autónomos", "Barcelona y su área metropolitana"],
       ["Negocios locales", "Mejor comunicación, redes y reputación"],
@@ -348,7 +364,8 @@ var T = {
     sub: "Master in Communication Management from Barcelona School of Management (UPF) with a background in economics. I work with strategy, numbers and content, in Spanish, English and Russian.",
     chips: ["Social media", "Google Ads", "Meta Ads", "Public relations", "Copywriting", "Newsletters", "Blog", "Marketing strategy", "Analytics", "ROI"],
     labelClients: "Who I work with",
-    labelCase: "Featured case", caseLink: "View the project on Behance",
+    labelWork: "Projects", workTitle: "Real work for real businesses",
+    work: { ph: "Project image", title: "Project name", desc: "A short description of the project: the challenge, what was done and the result.", link: "View project", prev: "Previous", next: "Next" },
     cards: [
       ["Small businesses and freelancers", "Barcelona and its metropolitan area"],
       ["Local businesses", "Better communication, social media and reputation"],
@@ -397,7 +414,8 @@ var T = {
     sub: "Магистр Communication Management (Barcelona School of Management, UPF), базовое образование в экономике. Работаю со стратегией, цифрами и контентом на испанском, английском и русском.",
     chips: ["Соцсети", "Google Ads", "Meta Ads", "PR", "Копирайтинг", "Рассылки", "Блог", "Маркетинговая стратегия", "Аналитика", "ROI"],
     labelClients: "С кем я работаю",
-    labelCase: "Избранный кейс", caseLink: "Смотреть проект на Behance",
+    labelWork: "Проекты", workTitle: "Реальные работы для реального бизнеса",
+    work: { ph: "Изображение проекта", title: "Название проекта", desc: "Краткое описание проекта: задача, что было сделано и результат.", link: "Смотреть проект", prev: "Назад", next: "Вперёд" },
     cards: [
       ["Малый бизнес и предприниматели", "Барселона и агломерация"],
       ["Локальные компании", "Коммуникации, соцсети и репутация"],
@@ -458,8 +476,14 @@ function render(lang) {
     return '<article class="card' + (i === 2 ? " wide" : "") + '"><div class="art a' + (i + 1) + '"></div><div class="card-body"><h3>' + esc(c[0]) + "</h3><p>" + esc(c[1]) + "</p></div></article>";
   }).join("");
 
-  $("l-case").textContent = t.labelCase;
-  $("case-link").textContent = t.caseLink;
+  $("l-work").textContent = t.labelWork;
+  $("work-title").textContent = t.workTitle;
+  $("work-prev").setAttribute("aria-label", t.work.prev);
+  $("work-next").setAttribute("aria-label", t.work.next);
+  $("work-track").innerHTML = [1, 2, 3].map(function (n) {
+    return '<article class="work" aria-roledescription="slide" aria-label="' + n + ' / 3"><div class="work-art a' + n + '" data-ph="' + esc(t.work.ph) + '"></div><div class="work-meta"><div><h3>' + esc(t.work.title) + '</h3><p>' + esc(t.work.desc) + '</p></div><a class="work-link" href="#proyectos">' + esc(t.work.link) + ' <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></article>';
+  }).join("");
+  updateArrows();
   $("l-services").textContent = t.labelServices;
   $("services").innerHTML = t.services.map(function (s, i) {
     return '<div class="item"><div class="item-head"><div class="item-title"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[SVC_KEYS[i]] + "</svg></span>" + esc(s[0]) + '</div><span class="price">' + esc(s[1]) + "</span></div><ul>" +
@@ -551,6 +575,22 @@ $("form").addEventListener("submit", function (e) {
   } else {
     setStatus(f.notReady, "err");
   }
+});
+
+var track = $("work-track");
+function step() { var c = track.querySelector(".work"); return c ? c.getBoundingClientRect().width + 20 : 300; }
+function updateArrows() {
+  $("work-prev").disabled = track.scrollLeft <= 4;
+  $("work-next").disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+}
+function slide(dir) { track.scrollBy({ left: dir * step(), behavior: "smooth" }); }
+$("work-prev").addEventListener("click", function () { slide(-1); });
+$("work-next").addEventListener("click", function () { slide(1); });
+track.addEventListener("scroll", updateArrows, { passive: true });
+window.addEventListener("resize", updateArrows);
+track.addEventListener("keydown", function (e) {
+  if (e.key === "ArrowRight") { e.preventDefault(); slide(1); }
+  if (e.key === "ArrowLeft") { e.preventDefault(); slide(-1); }
 });
 
 var THEME_LABEL = { es: "Tema oscuro", en: "Dark theme", ru: "Тёмная тема" };
