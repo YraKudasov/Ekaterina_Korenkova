@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ekaterina Korenkova</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: one narrow bordered column on a pale page, tiny uppercase section labels, black pill actions (portfolio template style). */
+:root {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --ink: #0a0a0a;
+  --muted: #737373;
+  --line: #e8e8e8;
+  --accent: #6d5bd0;
+  --mark: #fde68a;
+  --chip: #f4f4f5;
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0b0c; --surface: #111113; --ink: #f5f5f5; --muted: #a1a1aa;
+    --line: #26262a; --accent: #a99dff; --mark: #5b4a12; --chip: #1c1c1f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b0b0c; --surface: #111113; --ink: #f5f5f5; --muted: #a1a1aa;
+  --line: #26262a; --accent: #a99dff; --mark: #5b4a12; --chip: #1c1c1f;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+.topbar { background: var(--ink); color: var(--bg); text-align: center; font-size: 12px; padding: 8px 16px; }
+.topbar b { font-weight: 500; }
+
+.page { max-width: 672px; margin: 0 auto; background: var(--surface); border-left: 1px solid var(--line); border-right: 1px solid var(--line); min-height: 100vh; }
+.section { padding: 32px 32px; border-top: 1px solid var(--line); }
+.label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 20px; }
+
+/* banner */
+.banner { height: 148px; margin: 16px 16px 0; border-radius: 10px; overflow: hidden; position: relative;
+  background:
+    radial-gradient(120% 140% at 15% 110%, #f9a77a 0%, transparent 55%),
+    radial-gradient(90% 120% at 85% 120%, #f06a4d 0%, transparent 50%),
+    radial-gradient(110% 100% at 50% -10%, #c9d6ea 0%, transparent 60%),
+    linear-gradient(#eef2f8, #f6efe9); }
+.banner svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* profile */
+.profile { padding: 0 32px 28px; position: relative; }
+.avatar { width: 64px; height: 64px; border-radius: 50%; margin-top: -32px; border: 3px solid var(--surface);
+  background: linear-gradient(135deg, #6d5bd0, #f06a4d); color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 20px; position: relative; }
+.profile-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+.name { font-size: 16px; font-weight: 600; }
+.role { font-size: 12px; color: var(--accent); }
+.loc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.actions { display: flex; align-items: center; gap: 8px; }
+.lang { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
+.lang button { font: inherit; font-size: 11px; font-weight: 500; border: 0; background: transparent; color: var(--muted); padding: 4px 9px; border-radius: 999px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.theme { position: relative; width: 56px; height: 30px; border-radius: 999px; border: 1px solid var(--line); background: var(--chip); cursor: pointer; padding: 0; flex: none; transition: background .25s, border-color .25s; }
+.theme .thumb { position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); transition: transform .3s cubic-bezier(.4, 0, .2, 1), background .25s; }
+.theme svg { position: absolute; top: 7px; width: 14px; height: 14px; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke .25s; }
+.theme .sun { left: 7px; stroke: var(--bg); }
+.theme .moon { right: 7px; stroke: var(--muted); }
+.theme[aria-checked="true"] .thumb { transform: translateX(26px); }
+.theme[aria-checked="true"] .sun { stroke: var(--muted); }
+.theme[aria-checked="true"] .moon { stroke: var(--bg); }
+.theme:hover { border-color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .theme .thumb, .theme svg { transition: none; } }
+.pill { font: inherit; font-size: 12px; font-weight: 500; text-decoration: none; background: var(--ink); color: var(--bg); border: 0; border-radius: 999px; padding: 8px 16px; cursor: pointer; display: inline-block; }
+.pill:hover { opacity: .85; }
+
+/* about */
+.lead { font-size: 22px; line-height: 1.4; font-weight: 500; letter-spacing: -.01em; text-wrap: balance; }
+.lead mark { background: linear-gradient(transparent 55%, var(--mark) 55%); color: inherit; padding: 0 2px; }
+.sub { color: var(--muted); font-size: 13px; margin-top: 14px; max-width: 56ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 22px; }
+.chip { font-size: 11px; border: 1px solid var(--line); background: var(--chip); border-radius: 6px; padding: 3px 9px; }
+
+/* audience cards */
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.card { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+.card.wide { grid-column: 1 / -1; }
+.art { height: 120px; }
+.card.wide .art { height: 96px; }
+.art.a1 { background: radial-gradient(80% 120% at 20% 100%, #ffb88a, transparent 60%), radial-gradient(70% 100% at 90% 0%, #b8a9ff, transparent 60%), #f3effa; }
+.art.a2 { background: radial-gradient(90% 120% at 80% 100%, #8fd3c4, transparent 60%), radial-gradient(70% 100% at 10% 0%, #ffe29a, transparent 60%), #eef7f4; }
+.art.a3 { background: radial-gradient(90% 120% at 50% 120%, #ff8f7a, transparent 55%), radial-gradient(70% 100% at 100% 0%, #9ec5ff, transparent 60%), #eef3fb; }
+.card-body { padding: 14px 16px 16px; }
+.card h3 { font-size: 13px; font-weight: 600; }
+.card p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* services list */
+.item { display: grid; grid-template-columns: 1fr; gap: 6px; padding-bottom: 28px; }
+.item + .item { padding-top: 28px; border-top: 1px dashed var(--line); }
+.item:last-child { padding-bottom: 0; }
+.item-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.item-title { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 14px; }
+.ico { width: 28px; height: 28px; border-radius: 8px; background: var(--chip); border: 1px solid var(--line); display: grid; place-items: center; flex: none; }
+.ico svg { width: 15px; height: 15px; stroke: var(--ink); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.price { font-size: 11px; color: var(--muted); background: var(--chip); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.item ul { margin: 6px 0 0 38px; padding: 0; color: var(--muted); font-size: 13px; display: grid; gap: 4px; }
+.note { margin-top: 24px; font-size: 12px; color: var(--muted); }
+
+/* timeline */
+.tl { display: grid; gap: 18px; }
+.tl-row { display: grid; grid-template-columns: 120px 14px 1fr; gap: 12px; align-items: start; }
+.tl-date { font-size: 11px; color: var(--muted); padding-top: 2px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink); margin: 7px auto 0; }
+.tl-title { font-weight: 600; font-size: 13px; }
+.tl-sub { font-size: 12px; color: var(--muted); }
+
+/* side stuff */
+.kv { display: grid; grid-template-columns: 120px 1fr; gap: 12px; padding: 14px 0; border-top: 1px dashed var(--line); }
+.kv:first-of-type { border-top: 0; padding-top: 0; }
+.kv-k { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.kv-v { display: grid; gap: 4px; font-size: 13px; }
+.kv-v span small { color: var(--muted); font-size: 12px; margin-left: 6px; }
+
+footer { padding: 20px 32px 32px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+@media (max-width: 520px) {
+  .section, footer { padding-left: 20px; padding-right: 20px; }
+  .profile { padding-left: 20px; padding-right: 20px; }
+  .banner { margin: 12px 12px 0; }
+  .cards { grid-template-columns: 1fr; }
+  .lead { font-size: 19px; }
+  .tl-row, .kv { grid-template-columns: 1fr; gap: 2px; }
+  .tl-row { grid-template-columns: 14px 1fr; }
+  .tl-date { grid-column: 2; order: 2; }
+  .dot { grid-row: 1; grid-column: 1; }
+  .tl-row > div:last-child { grid-column: 2; }
+  .item ul { margin-left: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<div class="topbar" id="topbar"></div>
+<main class="page">
+  <div class="banner" aria-hidden="true">
+    <svg viewBox="0 0 640 148" preserveAspectRatio="none">
+      <g fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="1">
+        <path d="M0 110 C120 70 200 140 320 100 S520 60 640 96"/>
+        <path d="M0 124 C130 90 210 150 330 116 S530 80 640 112"/>
+        <path d="M0 96 C110 56 190 124 310 84 S510 44 640 80"/>
+      </g>
+    </svg>
+  </div>
+
+  <header class="profile">
+    <div class="avatar" aria-hidden="true">EK</div>
+    <div class="profile-row">
+      <div>
+        <div class="name">Ekaterina Korenkova</div>
+        <div class="role" id="role"></div>
+        <div class="loc" id="loc"></div>
+      </div>
+      <div class="actions">
+        <div class="lang" role="group" aria-label="Language">
+          <button type="button" data-lang="es" aria-pressed="true">ES</button>
+          <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+        </div>
+        <button type="button" class="theme" id="theme" role="switch" aria-checked="false" aria-label="Tema oscuro">
+          <span class="thumb"></span>
+          <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        </button>
+        <a class="pill" id="cta" href="#contacto"></a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" id="sobre-mi">
+    <div class="label" id="l-about"></div>
+    <p class="lead" id="lead"></p>
+    <p class="sub" id="sub"></p>
+    <div class="chips" id="chips"></div>
+  </section>
+
+  <section class="section" id="clientes">
+    <div class="label" id="l-clients"></div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="section" id="servicios">
+    <div class="label" id="l-services"></div>
+    <div id="services"></div>
+    <p class="note" id="svc-note"></p>
+  </section>
+
+  <section class="section" id="formacion">
+    <div class="label" id="l-edu"></div>
+    <div class="tl" id="timeline"></div>
+  </section>
+
+  <section class="section" id="enfoque">
+    <div class="label" id="l-why"></div>
+    <div id="why"></div>
+  </section>
+
+  <section class="section" id="contacto">
+    <div class="label" id="l-contact"></div>
+    <p class="lead" id="c-lead" style="font-size:18px"></p>
+    <div id="c-list" style="margin-top:18px;display:grid;gap:6px;font-size:13px"></div>
+  </section>
+
+  <footer>
+    <span id="foot-l"></span>
+    <span id="foot-r"></span>
+  </footer>
+</main>
+
+<script>
+// Contact channels: fill in to show them on the page. Empty values stay hidden.
+var CONFIG = { email: "", phone: "", linkedin: "", instagram: "" };
+
+var ICONS = {
+  social: '<path d="M4 5h16v11H9l-5 4z"/>',
+  ads: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  pr: '<path d="M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1zM17 9a4 4 0 0 1 0 6"/>',
+  content: '<path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"/>',
+  strategy: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/><path d="M12 4V2M12 22v-2M4 12H2M22 12h-2"/>'
+};
+var SVC_KEYS = ["social", "ads", "pr", "content", "strategy"];
+
+var T = {
+  es: {
+    htmlLang: "es",
+    topbar: "<b>Disponible para nuevos proyectos</b> · Barcelona y trabajo en remoto",
+    role: "Comunicación, marketing digital y contenidos",
+    loc: "Barcelona, España",
+    cta: "Contactar",
+    labelAbout: "Sobre mí",
+    lead: 'Hola, soy Ekaterina. Ayudo a pymes y autónomos de Barcelona a <mark>comunicar mejor</mark>, ganar presencia en redes y <mark>convertir su publicidad en resultados</mark>.',
+    sub: "Máster en Communication Management por la Barcelona School of Management (UPF) y base en economía. Trabajo con estrategia, números y contenido, y atiendo en español, inglés y ruso.",
+    chips: ["Redes sociales", "Google Ads", "Meta Ads", "Relaciones públicas", "Copywriting", "Newsletters", "Blog", "Estrategia de marketing", "Analítica", "ROI"],
+    labelClients: "Para quién trabajo",
+    cards: [
+      ["Pymes y autónomos", "Barcelona y su área metropolitana"],
+      ["Negocios locales", "Mejor comunicación, redes y reputación"],
+      ["Clientes internacionales", "Atención en español, inglés y ruso"]
+    ],
+    labelServices: "Servicios y tarifas",
+    services: [
+      ["Gestión de redes sociales", "Desde 400 €/mes", ["Calendario editorial y publicación", "Gestión de comunidad y respuestas", "Informe mensual de resultados"]],
+      ["Campañas de publicidad online", "300 €/mes + inversión", ["Google Ads y Meta Ads", "Segmentación, anuncios y optimización", "Medición del retorno de la inversión"]],
+      ["Comunicación corporativa y relaciones públicas", "Desde 450 €/mes", ["Mensajes y tono de marca", "Notas de prensa y relación con medios", "Cuidado de la reputación online"]],
+      ["Creación de contenidos", "Desde 350 €/mes", ["Copywriting para web y anuncios", "Newsletters y email marketing", "Artículos de blog"]],
+      ["Estrategia y consultoría de marketing", "60 €/h · Plan 500 – 800 €", ["Diagnóstico de comunicación y marketing", "Plan de acción a medida", "Sesiones por horas o plan cerrado"]]
+    ],
+    svcNote: "Tarifas orientativas. Los servicios mensuales se ajustan a cada negocio; la inversión publicitaria se paga aparte.",
+    labelEdu: "Formación e idiomas",
+    timeline: [
+      ["Posgrado", "Máster en Communication Management", "Barcelona School of Management · Universitat Pompeu Fabra"],
+      ["Base", "Economía y comunicación", "Enfoque analítico orientado a resultados"],
+      ["Idiomas", "Ruso, inglés y español", "Ruso nativo · inglés · español"]
+    ],
+    labelWhy: "Por qué conmigo",
+    why: [
+      ["Trato directo", ["Hablas con la persona que hace el trabajo", "Respuesta rápida y seguimiento continuo"]],
+      ["Enfoque", ["Estrategia primero, después ejecución", "Decisiones con datos y objetivo de ROI"]],
+      ["Idiomas", ["Español", "Inglés", "Ruso"]]
+    ],
+    labelContact: "Contacto",
+    cLead: "Cuéntame qué necesita tu negocio y te propongo el mejor punto de partida.",
+    cLoc: "Barcelona · reuniones presenciales y online",
+    cEmail: "Email", cPhone: "Teléfono", cLinkedin: "LinkedIn", cInstagram: "Instagram",
+    footL: "© 2026 Ekaterina Korenkova",
+    footR: "Comunicación y marketing digital en Barcelona"
+  },
+  en: {
+    htmlLang: "en",
+    topbar: "<b>Available for new projects</b> · Barcelona and remote",
+    role: "Communication, digital marketing and content",
+    loc: "Barcelona, Spain",
+    cta: "Get in touch",
+    labelAbout: "About me",
+    lead: "Hi, I'm Ekaterina. I help small businesses and freelancers in Barcelona <mark>communicate better</mark>, grow their social presence and <mark>turn advertising into results</mark>.",
+    sub: "Master in Communication Management from Barcelona School of Management (UPF) with a background in economics. I work with strategy, numbers and content, in Spanish, English and Russian.",
+    chips: ["Social media", "Google Ads", "Meta Ads", "Public relations", "Copywriting", "Newsletters", "Blog", "Marketing strategy", "Analytics", "ROI"],
+    labelClients: "Who I work with",
+    cards: [
+      ["Small businesses and freelancers", "Barcelona and its metropolitan area"],
+      ["Local businesses", "Better communication, social media and reputation"],
+      ["International clients", "Service in Spanish, English and Russian"]
+    ],
+    labelServices: "Services and pricing",
+    services: [
+      ["Social media management", "From €400/month", ["Editorial calendar and publishing", "Community management and replies", "Monthly results report"]],
+      ["Online advertising campaigns", "€300/month + ad spend", ["Google Ads and Meta Ads", "Targeting, creatives and optimization", "Return on investment tracking"]],
+      ["Corporate communication and PR", "From €450/month", ["Brand messaging and tone of voice", "Press releases and media relations", "Online reputation care"]],
+      ["Content creation", "From €350/month", ["Copywriting for web and ads", "Newsletters and email marketing", "Blog articles"]],
+      ["Marketing strategy and consulting", "€60/h · Plan €500 – 800", ["Communication and marketing diagnosis", "Tailored action plan", "Hourly sessions or a fixed plan"]]
+    ],
+    svcNote: "Indicative rates. Monthly services are adjusted to each business; ad spend is paid separately.",
+    labelEdu: "Education and languages",
+    timeline: [
+      ["Postgraduate", "Master in Communication Management", "Barcelona School of Management · Universitat Pompeu Fabra"],
+      ["Foundation", "Economics and communication", "Analytical, results-oriented approach"],
+      ["Languages", "Russian, English and Spanish", "Native Russian · English · Spanish"]
+    ],
+    labelWhy: "Why work with me",
+    why: [
+      ["Direct contact", ["You talk to the person doing the work", "Fast replies and steady follow-up"]],
+      ["Approach", ["Strategy first, then execution", "Data-driven decisions with an ROI goal"]],
+      ["Languages", ["Spanish", "English", "Russian"]]
+    ],
+    labelContact: "Contact",
+    cLead: "Tell me what your business needs and I'll suggest the best starting point.",
+    cLoc: "Barcelona · in-person and online meetings",
+    cEmail: "Email", cPhone: "Phone", cLinkedin: "LinkedIn", cInstagram: "Instagram",
+    footL: "© 2026 Ekaterina Korenkova",
+    footR: "Communication and digital marketing in Barcelona"
+  },
+  ru: {
+    htmlLang: "ru",
+    topbar: "<b>Открыта к новым проектам</b> · Барселона и удалённо",
+    role: "Коммуникации, digital-маркетинг и контент",
+    loc: "Барселона, Испания",
+    cta: "Связаться",
+    labelAbout: "Обо мне",
+    lead: "Привет, я Екатерина. Помогаю малому бизнесу и предпринимателям Барселоны <mark>лучше коммуницировать</mark>, расти в соцсетях и <mark>превращать рекламу в результат</mark>.",
+    sub: "Магистр Communication Management (Barcelona School of Management, UPF), базовое образование в экономике. Работаю со стратегией, цифрами и контентом на испанском, английском и русском.",
+    chips: ["Соцсети", "Google Ads", "Meta Ads", "PR", "Копирайтинг", "Рассылки", "Блог", "Маркетинговая стратегия", "Аналитика", "ROI"],
+    labelClients: "С кем я работаю",
+    cards: [
+      ["Малый бизнес и предприниматели", "Барселона и агломерация"],
+      ["Локальные компании", "Коммуникации, соцсети и репутация"],
+      ["Международные клиенты", "Работа на испанском, английском и русском"]
+    ],
+    labelServices: "Услуги и тарифы",
+    services: [
+      ["Ведение социальных сетей", "От 400 €/мес", ["Контент-план и публикации", "Работа с сообществом и ответы", "Ежемесячный отчёт о результатах"]],
+      ["Рекламные кампании онлайн", "300 €/мес + бюджет", ["Google Ads и Meta Ads", "Таргетинг, креативы и оптимизация", "Оценка возврата инвестиций"]],
+      ["Корпоративные коммуникации и PR", "От 450 €/мес", ["Ключевые сообщения и tone of voice", "Пресс-релизы и работа со СМИ", "Забота об онлайн-репутации"]],
+      ["Создание контента", "От 350 €/мес", ["Копирайтинг для сайта и рекламы", "Рассылки и email-маркетинг", "Статьи для блога"]],
+      ["Маркетинговая стратегия и консалтинг", "60 €/ч · План 500 – 800 €", ["Диагностика коммуникаций и маркетинга", "Индивидуальный план действий", "Почасовые сессии или готовый план"]]
+    ],
+    svcNote: "Ориентировочные тарифы. Ежемесячные услуги подбираются под бизнес; рекламный бюджет оплачивается отдельно.",
+    labelEdu: "Образование и языки",
+    timeline: [
+      ["Магистратура", "Master in Communication Management", "Barcelona School of Management · Universitat Pompeu Fabra"],
+      ["База", "Экономика и коммуникации", "Аналитический подход, ориентация на результат"],
+      ["Языки", "Русский, английский, испанский", "Русский родной · английский · испанский"]
+    ],
+    labelWhy: "Почему со мной",
+    why: [
+      ["Прямой контакт", ["Вы общаетесь с тем, кто делает работу", "Быстрые ответы и постоянная обратная связь"]],
+      ["Подход", ["Сначала стратегия, потом исполнение", "Решения на данных, цель — ROI"]],
+      ["Языки", ["Испанский", "Английский", "Русский"]]
+    ],
+    labelContact: "Контакты",
+    cLead: "Расскажите, что нужно вашему бизнесу, и я предложу лучшую точку старта.",
+    cLoc: "Барселона · встречи лично и онлайн",
+    cEmail: "Email", cPhone: "Телефон", cLinkedin: "LinkedIn", cInstagram: "Instagram",
+    footL: "© 2026 Ekaterina Korenkova",
+    footR: "Коммуникации и digital-маркетинг в Барселоне"
+  }
+};
+
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+function render(lang) {
+  var t = T[lang] || T.es;
+  document.documentElement.lang = t.htmlLang;
+  $("topbar").innerHTML = t.topbar;
+  $("role").textContent = t.role;
+  $("loc").textContent = t.loc;
+  $("cta").textContent = t.cta;
+  $("cta").setAttribute("href", CONFIG.email ? "mailto:" + CONFIG.email : "#contacto");
+  $("l-about").textContent = t.labelAbout;
+  $("lead").innerHTML = t.lead;
+  $("sub").textContent = t.sub;
+  $("chips").innerHTML = t.chips.map(function (c) { return '<span class="chip">' + esc(c) + "</span>"; }).join("");
+
+  $("l-clients").textContent = t.labelClients;
+  $("cards").innerHTML = t.cards.map(function (c, i) {
+    return '<article class="card' + (i === 2 ? " wide" : "") + '"><div class="art a' + (i + 1) + '"></div><div class="card-body"><h3>' + esc(c[0]) + "</h3><p>" + esc(c[1]) + "</p></div></article>";
+  }).join("");
+
+  $("l-services").textContent = t.labelServices;
+  $("services").innerHTML = t.services.map(function (s, i) {
+    return '<div class="item"><div class="item-head"><div class="item-title"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[SVC_KEYS[i]] + "</svg></span>" + esc(s[0]) + '</div><span class="price">' + esc(s[1]) + "</span></div><ul>" +
+      s[2].map(function (b) { return "<li>" + esc(b) + "</li>"; }).join("") + "</ul></div>";
+  }).join("");
+  $("svc-note").textContent = t.svcNote;
+
+  $("l-edu").textContent = t.labelEdu;
+  $("timeline").innerHTML = t.timeline.map(function (r) {
+    return '<div class="tl-row"><div class="tl-date">' + esc(r[0]) + '</div><div class="dot"></div><div><div class="tl-title">' + esc(r[1]) + '</div><div class="tl-sub">' + esc(r[2]) + "</div></div></div>";
+  }).join("");
+
+  $("l-why").textContent = t.labelWhy;
+  $("why").innerHTML = t.why.map(function (w) {
+    return '<div class="kv"><div class="kv-k">' + esc(w[0]) + '</div><div class="kv-v">' + w[1].map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("") + "</div></div>";
+  }).join("");
+
+  $("l-contact").textContent = t.labelContact;
+  $("c-lead").textContent = t.cLead;
+  var rows = ['<span>' + esc(t.cLoc) + "</span>"];
+  if (CONFIG.email) rows.push(esc(t.cEmail) + ': <a href="mailto:' + esc(CONFIG.email) + '">' + esc(CONFIG.email) + "</a>");
+  if (CONFIG.phone) rows.push(esc(t.cPhone) + ': <a href="tel:' + esc(CONFIG.phone) + '">' + esc(CONFIG.phone) + "</a>");
+  if (CONFIG.linkedin) rows.push(esc(t.cLinkedin) + ': <a href="' + esc(CONFIG.linkedin) + '">' + esc(CONFIG.linkedin) + "</a>");
+  if (CONFIG.instagram) rows.push(esc(t.cInstagram) + ': <a href="' + esc(CONFIG.instagram) + '">' + esc(CONFIG.instagram) + "</a>");
+  $("c-list").innerHTML = rows.join("");
+  $("foot-l").textContent = t.footL;
+  $("foot-r").textContent = t.footR;
+  $("theme").setAttribute("aria-label", THEME_LABEL[lang] || THEME_LABEL.es);
+
+  document.querySelectorAll(".lang button").forEach(function (b) {
+    b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === lang));
+  });
+}
+
+document.querySelectorAll(".lang button").forEach(function (b) {
+  b.addEventListener("click", function () {
+    var l = b.getAttribute("data-lang");
+    render(l);
+    try { localStorage.setItem("ek-lang", l); } catch (e) {}
+  });
+});
+
+var THEME_LABEL = { es: "Tema oscuro", en: "Dark theme", ru: "Тёмная тема" };
+function applyTheme(mode) {
+  document.documentElement.setAttribute("data-theme", mode);
+  $("theme").setAttribute("aria-checked", String(mode === "dark"));
+}
+function currentTheme() {
+  var a = document.documentElement.getAttribute("data-theme");
+  if (a === "dark" || a === "light") return a;
+  return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+var savedTheme = null;
+try { savedTheme = localStorage.getItem("ek-theme"); } catch (e) {}
+applyTheme(savedTheme === "dark" || savedTheme === "light" ? savedTheme : currentTheme());
+$("theme").addEventListener("click", function () {
+  var next = currentTheme() === "dark" ? "light" : "dark";
+  applyTheme(next);
+  try { localStorage.setItem("ek-theme", next); } catch (e) {}
+});
+
+var start = "es";
+try { start = localStorage.getItem("ek-lang") || "es"; } catch (e) {}
+render(T[start] ? start : "es");
+</script>
+</body>
+</html>
