@@ -123,6 +123,61 @@ a { color: inherit; }
   .work-title { font-size: 21px; }
 }
 
+/* case page overlay */
+.work-art { background-size: cover; background-position: center; }
+.work-art.has-img::after, .shot.has-img::after { display: none; }
+.overlay { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.55); display: flex; justify-content: center; }
+.overlay[hidden] { display: none; }
+.sheet { position: relative; width: min(960px, 100%); height: 100%; overflow-y: auto; background: var(--surface); color: var(--ink); padding: 0 48px 48px; overscroll-behavior: contain; }
+.sheet-bar { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 16px 0; background: var(--surface); border-bottom: 1px solid var(--line); margin-bottom: 36px; }
+.sheet-bar .label { margin: 0; }
+.close { font: inherit; font-size: 12px; font-weight: 500; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 14px; cursor: pointer; }
+.close:hover { border-color: var(--ink); }
+.case-title { font-size: 34px; line-height: 1.15; font-weight: 600; letter-spacing: -.02em; max-width: 20ch; text-wrap: balance; }
+.meta { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 24px 0 32px; }
+.meta div { display: grid; gap: 2px; }
+.meta dt { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.meta dd { margin: 0; font-size: 13px; }
+.shot { position: relative; margin: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: linear-gradient(135deg, var(--chip), var(--surface)); }
+.shot::after { content: attr(data-ph); position: absolute; left: 14px; bottom: 12px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.shot img { display: block; width: 100%; height: auto; }
+.c-block { display: grid; grid-template-columns: 200px 1fr; gap: 24px; padding: 40px 0; border-top: 1px solid var(--line); }
+.c-block > .label { margin: 0; padding-top: 4px; }
+.c-text { display: grid; gap: 14px; font-size: 15px; line-height: 1.65; max-width: 62ch; }
+.goals { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.goal { font-size: 12px; border: 1px solid var(--line); background: var(--chip); border-radius: 999px; padding: 5px 12px; }
+.specimens { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.spec { border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: grid; gap: 4px; }
+.spec b { font-size: 12px; font-weight: 600; }
+.spec .aa { font-size: 76px; line-height: 1; letter-spacing: -.02em; }
+.spec .abc { font-size: 12px; color: var(--muted); }
+.serif { font-family: Excelsior, "Excelsior LT", Georgia, "Times New Roman", serif; font-weight: 700; }
+.sans { font-family: Verdana, Geneva, sans-serif; font-weight: 700; }
+.swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+.swatch { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.swatch i { display: block; height: 72px; }
+.swatch div { padding: 10px 12px; font-size: 11px; color: var(--muted); display: grid; gap: 1px; font-variant-numeric: tabular-nums; }
+.swatch div b { color: var(--ink); font-size: 12px; font-weight: 600; }
+.refs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.refs .shot { aspect-ratio: 3 / 4; }
+.refs .shot img { height: 100%; object-fit: cover; }
+.poster-wrap { max-width: 460px; }
+.poster-wrap .shot { aspect-ratio: 997 / 1425; }
+.mocks { display: grid; gap: 16px; }
+.mocks .shot:first-child { aspect-ratio: 1402 / 1263; }
+.mocks .shot:last-child { aspect-ratio: 1402 / 1122; }
+.mocks .shot img { height: 100%; object-fit: cover; }
+.hero-shot { aspect-ratio: 1400 / 1003; }
+.hero-shot img { height: 100%; object-fit: cover; }
+.credit { padding-top: 32px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: center; }
+@media (max-width: 640px) {
+  .sheet { padding: 0 20px 32px; }
+  .case-title { font-size: 26px; }
+  .c-block { grid-template-columns: 1fr; gap: 14px; padding: 28px 0; }
+  .specimens, .swatches { grid-template-columns: 1fr; }
+  .refs { grid-template-columns: 1fr 1fr; }
+}
+
 /* services list */
 .item { display: grid; grid-template-columns: 1fr; gap: 6px; padding-bottom: 28px; }
 .item + .item { padding-top: 28px; border-top: 1px dashed var(--line); }
@@ -287,6 +342,13 @@ footer { padding: 20px 48px 32px; border-top: 1px solid var(--line); font-size: 
   </footer>
 </main>
 
+<div class="overlay" id="case-overlay" role="dialog" aria-modal="true" aria-labelledby="case-title" hidden>
+  <div class="sheet" id="case-sheet">
+    <div class="sheet-bar"><span class="label" id="case-kicker"></span><button type="button" class="close" id="case-close"></button></div>
+    <div id="case-body"></div>
+  </div>
+</div>
+
 <script>
 // Contact channels: fill in to show them on the page. Empty values stay hidden.
 // formEndpoint: URL of a form service (for example a Formspree form: "https://formspree.io/f/xxxxxxxx").
@@ -315,6 +377,7 @@ var T = {
     chips: ["Redes sociales", "Google Ads", "Meta Ads", "Relaciones públicas", "Copywriting", "Newsletters", "Blog", "Estrategia de marketing", "Analítica", "ROI"],
     labelClients: "Para quién trabajo",
     labelWork: "Proyectos", workTitle: "Trabajos reales para negocios reales",
+    upf: {"cardTitle": "Póster para la Universitat Pompeu Fabra", "cardDesc": "Diseño de un póster que presenta la universidad y la promociona entre futuros estudiantes, fiel a su identidad de marca.", "link": "Ver caso", "kicker": "Caso · Diseño gráfico", "close": "Cerrar", "title": "Un póster universitario para la Universitat Pompeu Fabra", "meta": [["Proyecto", "Póster universitario"], ["Año", "2024"], ["Diseño", "Tatiana Korenkova"]], "about": "Sobre el proyecto", "obj": "El objetivo de este proyecto era crear una breve ficha informativa sobre la Universitat Pompeu Fabra de Barcelona que aumentara su notoriedad y la promocionara entre posibles estudiantes.", "brand": "Los colores y la tipografía se eligieron según el manual de marca para encajar con su identidad y reforzar el reconocimiento de marca.", "goals": ["Defender la identidad de marca de la universidad", "Atraer a futuros estudiantes"], "type": "Tipografía y color", "colorLabel": "Paleta de color", "refs": "Referencias", "poster": "Póster final", "mock": "Mockups", "ph": "Imagen", "credit": "Diseño de Tatiana Korenkova, 2024"},
     work: { ph: "Imagen del proyecto", title: "Nombre del proyecto", desc: "Descripción breve del proyecto: el reto, lo que se hizo y el resultado.", link: "Ver proyecto", prev: "Anterior", next: "Siguiente" },
     cards: [
       ["Pymes y autónomos", "Barcelona y su área metropolitana"],
@@ -365,6 +428,7 @@ var T = {
     chips: ["Social media", "Google Ads", "Meta Ads", "Public relations", "Copywriting", "Newsletters", "Blog", "Marketing strategy", "Analytics", "ROI"],
     labelClients: "Who I work with",
     labelWork: "Projects", workTitle: "Real work for real businesses",
+    upf: {"cardTitle": "Poster for Pompeu Fabra University", "cardDesc": "A poster design that introduces the university and promotes it among prospective students, true to its brand identity.", "link": "View case", "kicker": "Case · Graphic design", "close": "Close", "title": "A university poster design for Pompeu Fabra University", "meta": [["Project", "University poster"], ["Year", "2024"], ["Design", "Tatiana Korenkova"]], "about": "About the project", "obj": "The objective of this project was to create a brief factsheet about Pompeu Fabra University in Barcelona that would increase its awareness and promote it among potential students.", "brand": "The colors and typography were picked according to the brand guidelines to match the brand identity and strengthen brand recognition.", "goals": ["Upholding the university's brand identity", "Attracting prospective students"], "type": "Typography and color", "colorLabel": "Color palette", "refs": "References", "poster": "Final poster", "mock": "Mockups", "ph": "Image", "credit": "Design by Tatiana Korenkova, 2024"},
     work: { ph: "Project image", title: "Project name", desc: "A short description of the project: the challenge, what was done and the result.", link: "View project", prev: "Previous", next: "Next" },
     cards: [
       ["Small businesses and freelancers", "Barcelona and its metropolitan area"],
@@ -415,6 +479,7 @@ var T = {
     chips: ["Соцсети", "Google Ads", "Meta Ads", "PR", "Копирайтинг", "Рассылки", "Блог", "Маркетинговая стратегия", "Аналитика", "ROI"],
     labelClients: "С кем я работаю",
     labelWork: "Проекты", workTitle: "Реальные работы для реального бизнеса",
+    upf: {"cardTitle": "Постер для Universitat Pompeu Fabra", "cardDesc": "Дизайн постера, который представляет университет и продвигает его среди будущих студентов, сохраняя фирменный стиль.", "link": "Смотреть кейс", "kicker": "Кейс · Графический дизайн", "close": "Закрыть", "title": "Университетский постер для Universitat Pompeu Fabra", "meta": [["Проект", "Университетский постер"], ["Год", "2024"], ["Дизайн", "Tatiana Korenkova"]], "about": "О проекте", "obj": "Цель проекта — создать краткую информационную карточку об университете Pompeu Fabra в Барселоне, которая повысит его узнаваемость и привлечёт потенциальных студентов.", "brand": "Цвета и шрифты подобраны по брендбуку, чтобы соответствовать фирменному стилю и усиливать узнаваемость бренда.", "goals": ["Сохранить фирменный стиль университета", "Привлечь будущих студентов"], "type": "Типографика и цвет", "colorLabel": "Цветовая палитра", "refs": "Референсы", "poster": "Итоговый постер", "mock": "Мокапы", "ph": "Изображение", "credit": "Дизайн: Tatiana Korenkova, 2024"},
     work: { ph: "Изображение проекта", title: "Название проекта", desc: "Краткое описание проекта: задача, что было сделано и результат.", link: "Смотреть проект", prev: "Назад", next: "Вперёд" },
     cards: [
       ["Малый бизнес и предприниматели", "Барселона и агломерация"],
@@ -481,8 +546,12 @@ function render(lang) {
   $("work-prev").setAttribute("aria-label", t.work.prev);
   $("work-next").setAttribute("aria-label", t.work.next);
   $("work-track").innerHTML = [1, 2, 3].map(function (n) {
-    return '<article class="work" aria-roledescription="slide" aria-label="' + n + ' / 3"><div class="work-art a' + n + '" data-ph="' + esc(t.work.ph) + '"></div><div class="work-meta"><div><h3>' + esc(t.work.title) + '</h3><p>' + esc(t.work.desc) + '</p></div><a class="work-link" href="#proyectos">' + esc(t.work.link) + ' <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></article>';
+    var c = n === 1;
+    var title = c ? t.upf.cardTitle : t.work.title, desc = c ? t.upf.cardDesc : t.work.desc, link = c ? t.upf.link : t.work.link, ph = c ? t.upf.ph : t.work.ph;
+    return '<article class="work" aria-roledescription="slide" aria-label="' + n + ' / 3"><div class="work-art a' + n + '" data-ph="' + esc(ph) + '"' + (c ? ' data-src="case-upf/hero.jpg"' : "") + '></div><div class="work-meta"><div><h3>' + esc(title) + '</h3><p>' + esc(desc) + '</p></div><a class="work-link" href="' + (c ? "#caso-upf" : "#proyectos") + '">' + esc(link) + ' <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div></article>';
   }).join("");
+  buildCase(t);
+  document.querySelectorAll("[data-src]").forEach(loadInto);
   updateArrows();
   $("l-services").textContent = t.labelServices;
   $("services").innerHTML = t.services.map(function (s, i) {
@@ -577,6 +646,59 @@ $("form").addEventListener("submit", function (e) {
   }
 });
 
+function loadInto(el) {
+  var src = el.getAttribute("data-src");
+  if (!src) return;
+  var im = new Image();
+  im.onload = function () {
+    if (el.tagName === "FIGURE") { im.alt = el.getAttribute("data-alt") || ""; im.loading = "lazy"; el.innerHTML = ""; el.appendChild(im); }
+    else { el.style.backgroundImage = 'url("' + src + '")'; }
+    el.classList.add("has-img");
+  };
+  im.src = src;
+}
+function shot(src, cls, alt, ph) { return '<figure class="shot ' + cls + '" data-src="' + src + '" data-alt="' + esc(alt) + '" data-ph="' + esc(ph) + '"></figure>'; }
+function buildCase(t) {
+  var u = t.upf;
+  $("case-kicker").textContent = u.kicker;
+  $("case-close").textContent = u.close;
+  var fonts = [["Excelsior", "serif"], ["Verdana", "sans"]];
+  var colors = [["#C8102E", "R200 G16 B46", "C2 M100 Y85 K6"], ["#000000", "R0 G0 B0", "C0 M0 Y0 K1"], ["#FFFFFF", "R255 G255 B255", "C0 M0 Y0 K0"]];
+  var refs = ""; for (var i = 1; i <= 6; i++) refs += shot("case-upf/ref-" + i + ".jpg", "", u.refs + " " + i, u.ph);
+  $("case-body").innerHTML =
+    '<h2 class="case-title" id="case-title">' + esc(u.title) + "</h2>" +
+    '<dl class="meta">' + u.meta.map(function (m) { return "<div><dt>" + esc(m[0]) + "</dt><dd>" + esc(m[1]) + "</dd></div>"; }).join("") + "</dl>" +
+    shot("case-upf/hero.jpg", "hero-shot", u.title, u.ph) +
+    '<div class="c-block"><div class="label">' + esc(u.about) + '</div><div class="c-text"><p>' + esc(u.obj) + "</p><p>" + esc(u.brand) + '</p><div class="goals">' + u.goals.map(function (g) { return '<span class="goal">' + esc(g) + "</span>"; }).join("") + "</div></div></div>" +
+    '<div class="c-block"><div class="label">' + esc(u.type) + '</div><div><div class="specimens">' + fonts.map(function (f) { return '<div class="spec"><b>' + f[0] + '</b><span class="aa ' + f[1] + '">Aa</span><span class="abc ' + f[1] + '">Aa Bb Cc Dd Ee Ff Gg Hh Ii Jj Kk Ll Mm Nn Oo Pp Qq Rr Ss Tt Uu Vv Ww Xx Yy Zz</span></div>'; }).join("") + "</div>" +
+      '<div class="label" style="margin:28px 0 0">' + esc(u.colorLabel) + '</div><div class="swatches">' + colors.map(function (c) { return '<div class="swatch"><i style="background:' + c[0] + '"></i><div><b>' + c[0] + "</b><span>" + c[1] + "</span><span>" + c[2] + "</span></div></div>"; }).join("") + "</div></div></div>" +
+    '<div class="c-block"><div class="label">' + esc(u.refs) + '</div><div class="refs">' + refs + "</div></div>" +
+    '<div class="c-block"><div class="label">' + esc(u.poster) + '</div><div class="poster-wrap">' + shot("case-upf/poster.jpg", "", u.poster, u.ph) + "</div></div>" +
+    '<div class="c-block"><div class="label">' + esc(u.mock) + '</div><div class="mocks">' + shot("case-upf/mockup-1.jpg", "", u.goals[0], u.ph) + shot("case-upf/mockup-2.jpg", "", u.goals[1], u.ph) + "</div></div>" +
+    '<div class="credit"><span>' + esc(u.credit) + '</span><button type="button" class="close" id="case-close-2">' + esc(u.close) + "</button></div>";
+  $("case-close-2").addEventListener("click", closeCase);
+}
+var overlay = $("case-overlay"), lastFocus = null;
+function openCase() {
+  if (!overlay.hidden) return;
+  lastFocus = document.activeElement;
+  overlay.hidden = false;
+  document.body.style.overflow = "hidden";
+  $("case-sheet").scrollTop = 0;
+  $("case-close").focus();
+}
+function hideCase() { overlay.hidden = true; document.body.style.overflow = ""; }
+function closeCase() {
+  hideCase();
+  if (location.hash === "#caso-upf") location.hash = "proyectos";
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+function route() { if (location.hash === "#caso-upf") openCase(); else if (!overlay.hidden) hideCase(); }
+$("case-close").addEventListener("click", closeCase);
+overlay.addEventListener("click", function (e) { if (e.target === overlay) closeCase(); });
+document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !overlay.hidden) closeCase(); });
+window.addEventListener("hashchange", route);
+
 var track = $("work-track");
 function step() { var c = track.querySelector(".work"); return c ? c.getBoundingClientRect().width + 20 : 300; }
 function updateArrows() {
@@ -616,6 +738,7 @@ var start = "es";
 try { start = localStorage.getItem("ek-lang") || "es"; } catch (e) {}
 currentLang = T[start] ? start : "es";
 render(currentLang);
+route();
 </script>
 </body>
 </html>
