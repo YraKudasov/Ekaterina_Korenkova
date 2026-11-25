@@ -98,6 +98,15 @@ a { color: inherit; }
   .card.wide .art { height: 120px; }
 }
 
+/* case study embed */
+.case { display: grid; gap: 14px; }
+.case-frame { width: 100%; max-width: 640px; aspect-ratio: 404 / 316; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--chip); }
+.case-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.case-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.case-foot b { color: var(--ink); font-weight: 600; font-size: 13px; }
+.ghost { font: inherit; font-size: 12px; font-weight: 500; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; color: var(--ink); }
+.ghost:hover { border-color: var(--muted); }
+
 /* services list */
 .item { display: grid; grid-template-columns: 1fr; gap: 6px; padding-bottom: 28px; }
 .item + .item { padding-top: 28px; border-top: 1px dashed var(--line); }
@@ -207,6 +216,19 @@ footer { padding: 20px 48px 32px; border-top: 1px solid var(--line); font-size: 
     <div class="cards" id="cards"></div>
   </section>
 
+  <section class="section" id="caso">
+    <div class="label" id="l-case"></div>
+    <div class="case">
+      <div class="case-frame">
+        <iframe src="https://www.behance.net/embed/project/204773653?ilo0=1" title="Language School Banner" loading="lazy" allowfullscreen allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <div class="case-foot">
+        <b>Language School Banner</b>
+        <a class="ghost" id="case-link" href="https://www.behance.net/gallery/204773653" target="_blank" rel="noopener"></a>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="servicios">
     <div class="label" id="l-services"></div>
     <div id="services"></div>
@@ -277,6 +299,7 @@ var T = {
     sub: "Máster en Communication Management por la Barcelona School of Management (UPF) y base en economía. Trabajo con estrategia, números y contenido, y atiendo en español, inglés y ruso.",
     chips: ["Redes sociales", "Google Ads", "Meta Ads", "Relaciones públicas", "Copywriting", "Newsletters", "Blog", "Estrategia de marketing", "Analítica", "ROI"],
     labelClients: "Para quién trabajo",
+    labelCase: "Caso destacado", caseLink: "Ver el proyecto en Behance",
     cards: [
       ["Pymes y autónomos", "Barcelona y su área metropolitana"],
       ["Negocios locales", "Mejor comunicación, redes y reputación"],
@@ -325,6 +348,7 @@ var T = {
     sub: "Master in Communication Management from Barcelona School of Management (UPF) with a background in economics. I work with strategy, numbers and content, in Spanish, English and Russian.",
     chips: ["Social media", "Google Ads", "Meta Ads", "Public relations", "Copywriting", "Newsletters", "Blog", "Marketing strategy", "Analytics", "ROI"],
     labelClients: "Who I work with",
+    labelCase: "Featured case", caseLink: "View the project on Behance",
     cards: [
       ["Small businesses and freelancers", "Barcelona and its metropolitan area"],
       ["Local businesses", "Better communication, social media and reputation"],
@@ -373,6 +397,7 @@ var T = {
     sub: "Магистр Communication Management (Barcelona School of Management, UPF), базовое образование в экономике. Работаю со стратегией, цифрами и контентом на испанском, английском и русском.",
     chips: ["Соцсети", "Google Ads", "Meta Ads", "PR", "Копирайтинг", "Рассылки", "Блог", "Маркетинговая стратегия", "Аналитика", "ROI"],
     labelClients: "С кем я работаю",
+    labelCase: "Избранный кейс", caseLink: "Смотреть проект на Behance",
     cards: [
       ["Малый бизнес и предприниматели", "Барселона и агломерация"],
       ["Локальные компании", "Коммуникации, соцсети и репутация"],
@@ -433,6 +458,8 @@ function render(lang) {
     return '<article class="card' + (i === 2 ? " wide" : "") + '"><div class="art a' + (i + 1) + '"></div><div class="card-body"><h3>' + esc(c[0]) + "</h3><p>" + esc(c[1]) + "</p></div></article>";
   }).join("");
 
+  $("l-case").textContent = t.labelCase;
+  $("case-link").textContent = t.caseLink;
   $("l-services").textContent = t.labelServices;
   $("services").innerHTML = t.services.map(function (s, i) {
     return '<div class="item"><div class="item-head"><div class="item-title"><span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">' + ICONS[SVC_KEYS[i]] + "</svg></span>" + esc(s[0]) + '</div><span class="price">' + esc(s[1]) + "</span></div><ul>" +
