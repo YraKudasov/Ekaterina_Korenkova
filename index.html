@@ -39,19 +39,16 @@ body { background: var(--bg); color: var(--ink); font-family: var(--font); font-
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
 
-.topbar { background: var(--ink); color: var(--bg); text-align: center; font-size: 12px; padding: 8px 16px; }
-.topbar b { font-weight: 500; }
-
-.page { max-width: 672px; margin: 0 auto; background: var(--surface); border-left: 1px solid var(--line); border-right: 1px solid var(--line); min-height: 100vh; }
-.section { padding: 32px 32px; border-top: 1px solid var(--line); }
+.page { max-width: 880px; margin: 0 auto; background: var(--surface); border-left: 1px solid var(--line); border-right: 1px solid var(--line); min-height: 100vh; }
+.section { padding: 40px 48px; border-top: 1px solid var(--line); }
 .label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 20px; }
 
 /* banner */
-.banner { margin: 16px 16px 0; border-radius: 10px; overflow: hidden; background: #f6f1ec; aspect-ratio: 4 / 1; }
+.banner { margin: 20px 20px 0; border-radius: 10px; overflow: hidden; background: #f6f1ec; aspect-ratio: 4 / 1; }
 .banner img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* profile */
-.profile { padding: 0 32px 28px; position: relative; }
+.profile { padding: 0 48px 32px; position: relative; }
 .avatar { width: 80px; height: 80px; border-radius: 50%; margin-top: -40px; border: 3px solid var(--surface); background: var(--chip); overflow: hidden; position: relative; }
 .avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .profile-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
@@ -76,9 +73,9 @@ a { color: inherit; }
 .pill:hover { opacity: .85; }
 
 /* about */
-.lead { font-size: 22px; line-height: 1.4; font-weight: 500; letter-spacing: -.01em; text-wrap: balance; }
+.lead { font-size: 26px; line-height: 1.4; font-weight: 500; letter-spacing: -.01em; text-wrap: balance; }
 .lead mark { background: linear-gradient(transparent 55%, var(--mark) 55%); color: inherit; padding: 0 2px; }
-.sub { color: var(--muted); font-size: 13px; margin-top: 14px; max-width: 56ch; }
+.sub { color: var(--muted); font-size: 14px; margin-top: 16px; max-width: 62ch; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 22px; }
 .chip { font-size: 11px; border: 1px solid var(--line); background: var(--chip); border-radius: 6px; padding: 3px 9px; }
 
@@ -94,6 +91,12 @@ a { color: inherit; }
 .card-body { padding: 14px 16px 16px; }
 .card h3 { font-size: 13px; font-weight: 600; }
 .card p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+@media (min-width: 760px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }
+  .card.wide { grid-column: auto; }
+  .card.wide .art { height: 120px; }
+}
 
 /* services list */
 .item { display: grid; grid-template-columns: 1fr; gap: 6px; padding-bottom: 28px; }
@@ -143,7 +146,7 @@ a { color: inherit; }
 .privacy { font-size: 11px; color: var(--muted); }
 @media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
 
-footer { padding: 20px 32px 32px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+footer { padding: 20px 48px 32px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
 @media (max-width: 520px) {
   .section, footer { padding-left: 20px; padding-right: 20px; }
@@ -162,7 +165,6 @@ footer { padding: 20px 32px 32px; border-top: 1px solid var(--line); font-size: 
 </style>
 </head>
 <body>
-<div class="topbar" id="topbar"></div>
 <main class="page">
   <div class="banner">
     <img src="banner.png" width="1280" height="320" alt="Marketing &amp; Communications Specialist: brand communication, campaigns, events, digital marketing">
@@ -266,7 +268,6 @@ var SVC_KEYS = ["social", "ads", "pr", "content", "strategy"];
 var T = {
   es: {
     htmlLang: "es",
-    topbar: "<b>Disponible para nuevos proyectos</b> · Barcelona y trabajo en remoto",
     role: "Comunicación, marketing digital y contenidos",
     loc: "Barcelona, España",
     cta: "Contactar",
@@ -315,7 +316,6 @@ var T = {
   },
   en: {
     htmlLang: "en",
-    topbar: "<b>Available for new projects</b> · Barcelona and remote",
     role: "Communication, digital marketing and content",
     loc: "Barcelona, Spain",
     cta: "Get in touch",
@@ -364,7 +364,6 @@ var T = {
   },
   ru: {
     htmlLang: "ru",
-    topbar: "<b>Открыта к новым проектам</b> · Барселона и удалённо",
     role: "Коммуникации, digital-маркетинг и контент",
     loc: "Барселона, Испания",
     cta: "Связаться",
@@ -419,7 +418,6 @@ function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&
 function render(lang) {
   var t = T[lang] || T.es;
   document.documentElement.lang = t.htmlLang;
-  $("topbar").innerHTML = t.topbar;
   $("role").textContent = t.role;
   $("loc").textContent = t.loc;
   $("cta").textContent = t.cta;
