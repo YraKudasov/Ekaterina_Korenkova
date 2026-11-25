@@ -15,8 +15,8 @@
   --ink: #0a0a0a;
   --muted: #737373;
   --line: #e8e8e8;
-  --accent: #6d5bd0;
-  --mark: #fde68a;
+  --accent: #5e3b84;
+  --mark: #e6d8f5;
   --chip: #f4f4f5;
   --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color-scheme: light;
@@ -24,13 +24,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --bg: #0b0b0c; --surface: #111113; --ink: #f5f5f5; --muted: #a1a1aa;
-    --line: #26262a; --accent: #a99dff; --mark: #5b4a12; --chip: #1c1c1f;
+    --line: #26262a; --accent: #c4a5ee; --mark: #4a3566; --chip: #1c1c1f;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #0b0b0c; --surface: #111113; --ink: #f5f5f5; --muted: #a1a1aa;
-  --line: #26262a; --accent: #a99dff; --mark: #5b4a12; --chip: #1c1c1f;
+  --line: #26262a; --accent: #c4a5ee; --mark: #4a3566; --chip: #1c1c1f;
   color-scheme: dark;
 }
 * { box-sizing: border-box; margin: 0; }
@@ -47,18 +47,13 @@ a { color: inherit; }
 .label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 20px; }
 
 /* banner */
-.banner { height: 148px; margin: 16px 16px 0; border-radius: 10px; overflow: hidden; position: relative;
-  background:
-    radial-gradient(120% 140% at 15% 110%, #f9a77a 0%, transparent 55%),
-    radial-gradient(90% 120% at 85% 120%, #f06a4d 0%, transparent 50%),
-    radial-gradient(110% 100% at 50% -10%, #c9d6ea 0%, transparent 60%),
-    linear-gradient(#eef2f8, #f6efe9); }
-.banner svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.banner { margin: 16px 16px 0; border-radius: 10px; overflow: hidden; background: #f6f1ec; aspect-ratio: 4 / 1; }
+.banner img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* profile */
 .profile { padding: 0 32px 28px; position: relative; }
-.avatar { width: 64px; height: 64px; border-radius: 50%; margin-top: -32px; border: 3px solid var(--surface);
-  background: linear-gradient(135deg, #6d5bd0, #f06a4d); color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 20px; position: relative; }
+.avatar { width: 80px; height: 80px; border-radius: 50%; margin-top: -40px; border: 3px solid var(--surface); background: var(--chip); overflow: hidden; position: relative; }
+.avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .profile-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
 .name { font-size: 16px; font-weight: 600; }
 .role { font-size: 12px; color: var(--accent); }
@@ -148,18 +143,12 @@ footer { padding: 20px 32px 32px; border-top: 1px solid var(--line); font-size: 
 <body>
 <div class="topbar" id="topbar"></div>
 <main class="page">
-  <div class="banner" aria-hidden="true">
-    <svg viewBox="0 0 640 148" preserveAspectRatio="none">
-      <g fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="1">
-        <path d="M0 110 C120 70 200 140 320 100 S520 60 640 96"/>
-        <path d="M0 124 C130 90 210 150 330 116 S530 80 640 112"/>
-        <path d="M0 96 C110 56 190 124 310 84 S510 44 640 80"/>
-      </g>
-    </svg>
+  <div class="banner">
+    <img src="banner.png" width="1280" height="320" alt="Marketing &amp; Communications Specialist: brand communication, campaigns, events, digital marketing">
   </div>
 
   <header class="profile">
-    <div class="avatar" aria-hidden="true">EK</div>
+    <div class="avatar"><img src="photo.png" width="200" height="200" alt="Ekaterina Korenkova"></div>
     <div class="profile-row">
       <div>
         <div class="name">Ekaterina Korenkova</div>
