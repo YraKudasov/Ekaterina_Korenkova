@@ -601,7 +601,6 @@ function render(lang) {
   var rows = ['<span>' + esc(t.cLoc) + "</span>"];
   if (CONFIG.email) rows.push(esc(t.cEmail) + ': <a href="mailto:' + esc(CONFIG.email) + '">' + esc(CONFIG.email) + "</a>");
   if (CONFIG.phone) rows.push(esc(t.cPhone) + ': <a href="tel:' + esc(CONFIG.phone) + '">' + esc(CONFIG.phone) + "</a>");
-  if (CONFIG.linkedin) rows.push(esc(t.cLinkedin) + ': <a href="' + esc(CONFIG.linkedin) + '">' + esc(CONFIG.linkedin) + "</a>");
   if (CONFIG.instagram) rows.push(esc(t.cInstagram) + ': <a href="' + esc(CONFIG.instagram) + '">' + esc(CONFIG.instagram) + "</a>");
   $("c-list").innerHTML = rows.join("");
   $("foot-l").textContent = t.footL;
